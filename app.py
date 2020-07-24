@@ -26,6 +26,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+
 # ----------------------------------------------------------------------------#
 # Models.
 # ----------------------------------------------------------------------------#
@@ -236,14 +237,33 @@ def create_venue_form():
 
 @app.route('/venues/create', methods=['POST'])
 def create_venue_submission():
-    # TODO: insert form data as a new Venue record in the db, instead
-    # TODO: modify data to be the data object returned from db insertion
+    form = VenueForm()
+    if form.validate():
+        try:
+            new_venue = Venue(name=form.name.data,
+                              genres=form.genres.data,
+                              city=form.city.data,
+                              state=form.state.data,
+                              address=form.address.data,
+                              phone=form.phone.data,
+                              seeking_talent=form.seeking_talent.data,
+                              seeking_description=form.seeking_description.data,
+                              image_link=form.image_link.data,
+                              website=form.website.data,
+                              facebook_link=form.facebook_link.data
+                              )
+            db.session.add(new_venue)
+            db.session.commit()
+            flash('Venue ' + request.form['name'] + ' was successfully listed!')
+        except:
+            flash('An error occurred. Venue ' + request.form['name'] + ' could not be listed.')
+            db.session.rollback()
+        finally:
+            db.session.close()
+    else:
+        flash('There is a form error')
+        return render_template('forms/new_venue.html', form=form)
 
-    # on successful db insert, flash success
-    flash('Venue ' + request.form['name'] + ' was successfully listed!')
-    # TODO: on unsuccessful db insert, flash an error instead.
-    # e.g., flash('An error occurred. Venue ' + data.name + ' could not be listed.')
-    # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
     return render_template('pages/home.html')
 
 
