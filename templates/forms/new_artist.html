@@ -39,7 +39,7 @@
       <div class="form-group">
         <label for="genres">Genres</label>
         <small>Ctrl+Click to select multiple</small>
-        {{ form.genres(class_ = 'form-control', placeholder='Genres, separated by commas', id=form.state, autofocus = true) }}
+        {{ form.genres(class_ = 'form-control', placeholder='Genres, separated by commas', id='genres', autofocus = true) }}
         {% for error in form.genres.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
@@ -53,19 +53,19 @@
           {{ form.seeking_description }}
         </div>
         <div class="form-group">
-          <label for="website">Image Link</label>
-          {{ form.image_link(class_ = 'form-control', placeholder='http://', id=form.state, autofocus = true) }}
+          <label for="image_link">Image Link</label>
+          {{ form.image_link(class_ = 'form-control', placeholder='http://', id='image_link', autofocus = true) }}
         </div>
       <div class="form-group">
           <label for="website">Website</label>
-          {{ form.website(class_ = 'form-control', placeholder='http://', id=form.state, autofocus = true) }}
+          {{ form.website(class_ = 'form-control', placeholder='http://', id='website', autofocus = true) }}
           {% for error in form.website.errors %}
           <span style="color: red;">[{{ error }}]</span>
           {% endfor %}
         </div>
       <div class="form-group">
           <label for="facebook_link">Facebook Link</label>
-          {{ form.facebook_link(class_ = 'form-control', placeholder='http://', id=form.state, autofocus = true) }}
+          {{ form.facebook_link(class_ = 'form-control', placeholder='http://', id='facebook_link', autofocus = true) }}
           {% for error in form.facebook_link.errors %}
           <span style="color: red;">[{{ error }}]</span>
           {% endfor %}
