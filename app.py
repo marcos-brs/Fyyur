@@ -299,16 +299,26 @@ def artists():
 
 @app.route('/artists/search', methods=['POST'])
 def search_artists():
-    # TODO: implement search on artists with partial string search. Ensure it is case-insensitive.
-    # seach for "A" should return "Guns N Petals", "Matt Quevado", and "The Wild Sax Band".
-    # search for "band" should return "The Wild Sax Band".
+    search_str = request.form.get('search_term')
+    search_query = Artist.query.filter(Artist.name.ilike('%{}%'.format(search_str))).all()
+
+    current_date = datetime.now()
+    data = []
+
+    for artist in search_query:
+        upcoming_shows = Show.query.filter_by(artist_id=artist.id).filter(Show.start_time > current_date).all()
+
+        artist_data = {
+            "id": artist.id,
+            "name": artist.name,
+            "num_upcoming_shows": len(upcoming_shows)
+        }
+
+        data.append(artist_data)
+
     response = {
-        "count": 1,
-        "data": [{
-            "id": 4,
-            "name": "Guns N Petals",
-            "num_upcoming_shows": 0,
-        }]
+        "count": len(search_query),
+        "data": data
     }
     return render_template('pages/search_artists.html', results=response,
                            search_term=request.form.get('search_term', ''))
